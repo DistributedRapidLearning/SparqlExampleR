@@ -1,7 +1,11 @@
 args <- commandArgs(trailingOnly = TRUE)
 
-install.packages(c("devtools"), repos = "https://cran.uni-muenster.de/")
-devtools::install_bitbucket("jvsoest/sparqlr", force = TRUE)
+if(!("devtools" %in% rownames(installed.packages()))) {
+    install.packages(c("devtools"), repos = "https://cran.uni-muenster.de/")
+}
+if(!("devtools" %in% rownames(installed.packages()))) {
+    devtools::install_bitbucket("jvsoest/sparqlr", force = TRUE)
+}
 
 #--------------------------------------------------------------------------------------------------
 # libraries
