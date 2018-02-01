@@ -25,7 +25,9 @@ LogFile<-args[6]
 dataProxyUrl<-args[7]
 proxyToken<-args[8]
 
-query <- "SELECT * WHERE { ?s ?p ?o. } LIMIT 100"
+#query <- "SELECT * WHERE { ?s ?p ?o. } LIMIT 100"
+query <- paste(readLines("query.sparql"), collapse = " ")
+
 
 dataSet <- performSparqlQuery.vlp(dataProxyUrl, query, key="VATE", token=proxyToken, verbose=TRUE)
 write.csv(x=dataSet, file=Outputparameterfile)

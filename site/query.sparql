@@ -1,0 +1,52 @@
+prefix roo: <http://www.cancerdata.org/roo/>
+prefix ncit: <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix time: <http://www.w3.org/2006/time#>
+prefix icd: <http://purl.bioontology.org/ontology/ICD10/>
+prefix icdcm: <http://purl.bioontology.org/ontology/ICD10CM/>
+prefix uo: <http://purl.obolibrary.org/obo/>
+
+SELECT ?patient  ?gender ?age ?cT ?cN ?death ?survivalMonths
+WHERE { 
+  ?patient rdf:type ncit:C16960.
+  ?patient roo:100008 ?disease.
+  ?disease rdf:type icd:C20.
+  
+  {
+    ?patient roo:100018 ?genderRes.
+    ?genderRes rdf:type ?genderClass.
+    VALUES (?genderClass ?gender) { (ncit:C16576 "0"^^xsd:int ) (ncit:C20197 "1"^^xsd:int ) } 
+  }
+  
+  {
+    ?patient roo:100016 ?ageDiagnosisResource.
+    ?ageDiagnosisResource rdf:type roo:100002;
+      roo:100042 ?age; 
+      roo:100027 ?ageUnitResource.
+    ?ageUnitResource rdf:type uo:UO_0000036.
+  }
+  
+  {
+    ?disease roo:100243 ?clinicalTNMRes.
+    ?clinicalTNMRes rdf:type ncit:C48881.
+    ?clinicalTNMRes roo:100244 ?clinicalTRes.
+    ?clinicalTRes rdf:type ?clinicalTClass.
+    VALUES (?clinicalTClass ?cT) { (ncit:C48720 "1"^^xsd:int ) (ncit:C48724 "2"^^xsd:int ) (ncit:C48728 "3"^^xsd:int ) (ncit:C48732 "4"^^xsd:int ) }
+    ?clinicalTNMRes roo:100242 ?clinicalNRes.
+    ?clinicalNRes rdf:type ?clinicalNClass.
+    VALUES (?clinicalNClass ?cN) { (ncit:C48705 "0"^^xsd:int ) (ncit:C48706 "1"^^xsd:int ) (ncit:C48786 "2"^^xsd:int ) (ncit:C48714 "3"^^xsd:int ) }
+  }
+  
+  {
+    ?patient roo:100026 ?survivalRes.
+    ?survivalRes rdf:type roo:100063;
+      roo:100042 ?survivalMonths;
+      roo:100027 ?survivalMonthsUnit.
+    ?survivalMonthsUnit rdf:type uo:UO_0000035.
+    ?patient roo:100028 ?vitalStatusRes.
+    ?vitalStatusRes rdf:type ?survivalStatus.
+    VALUES (?survivalStatus ?death) { ( ncit:C37987 "0"^^xsd:int ) ( ncit:C28554 "1"^^xsd:int ) }
+    ?vitalStatusRes roo:100026 ?survivalRes.
+  }
+}
