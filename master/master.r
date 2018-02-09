@@ -32,10 +32,13 @@ userInputFileLocation <- args[8]
 # LogFile: If you want to add things to the log, add them to this file path
 LogFile <- args[9]
 
+query <- paste(readLines(userInputFileLocation), collapse = " ")
+siteInput = list(query=query)
+
 siteIds <- unlist(strsplit(siteIds, ","))
 for(siteId in siteIds) {
     fileConn<-file(file.path(outputLocation, paste0("Input_", siteId, ".txt", sep=""), fsep="\\"))
-    writeLines(c("test"), fileConn)
+    writeLines(toJSON(siteInput), fileConn)
     close(fileConn)
 }
 

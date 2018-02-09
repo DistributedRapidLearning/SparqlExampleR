@@ -35,7 +35,8 @@ dataProxyUrl<-args[7]
 proxyToken<-args[8]
 
 #query <- "SELECT * WHERE { ?s ?p ?o. } LIMIT 100"
-query <- paste(readLines("query.sparql"), collapse = " ")
+siteInputParams <- fromJSON(paste(readLines(InputParameterFile), collapse=""))
+query <- siteInputParams$query
 
 
 dataSet <- performSparqlQuery.vlp(dataProxyUrl, query, key="VATE", token=proxyToken, verbose=TRUE)
