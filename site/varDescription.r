@@ -47,8 +47,12 @@ describeVars <- function(dataSet) {
     varNames <- colnames(dataSet)
     varNames <- varNames[!(varNames %in% "patient")]
     patients <- dataSet$patient
+    setSize <- nrow(dataSet)
 
-    dataSet <- dataSet[,varNames]
+    #only use unique patients, if there are multiple rows for one patient, only use the 1st row.
+    indices <- sapply(unique(patients), function(x) { which(patients==x)[1] })
+
+    dataSet <- dataSet[indices,varNames]
 
     variableDescription <- analyzeDataFrame(dataSet)
 
@@ -81,5 +85,5 @@ describeVars <- function(dataSet) {
     #remove row names
     rownames(varDescription.categories) <- NULL
 
-    list(patients=unique(patients), rows=nrow(dataSet), numeric=varDescription.numerical, categories=varDescription.categories)
+    list(patients=length(unique(patients)), rows=setSize, numeric=varDescription.numerical, categories=varDescription.categories)
 }
