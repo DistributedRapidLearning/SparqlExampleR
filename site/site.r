@@ -10,6 +10,7 @@ if(!("devtools" %in% rownames(installed.packages()))) {
 #--------------------------------------------------------------------------------------------------
 # libraries
 suppressMessages(library(sparqlr))
+source("varDescription.r")
 #--------------------------------------------------------------------------------------------------
 # arguments
 # RunId : ID of algorithm "job" in infrastructure
@@ -34,4 +35,8 @@ query <- paste(readLines("query.sparql"), collapse = " ")
 
 
 dataSet <- performSparqlQuery.vlp(dataProxyUrl, query, key="VATE", token=proxyToken, verbose=TRUE)
-write.csv(x=dataSet, file=Outputparameterfile)
+varDescription <- describeVars(dataSet)
+
+sink(Outputparameterfile)
+varDescription
+sink()
