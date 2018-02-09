@@ -3,13 +3,17 @@ args <- commandArgs(trailingOnly = TRUE)
 if(!("devtools" %in% rownames(installed.packages()))) {
     install.packages(c("devtools"), repos = "https://cran.uni-muenster.de/")
 }
-if(!("devtools" %in% rownames(installed.packages()))) {
+if(!("jsonlite" %in% rownames(installed.packages()))) {
+    install.packages(c("jsonlite"), repos = "https://cran.uni-muenster.de/")
+}
+if(!("sparqlr" %in% rownames(installed.packages()))) {
     devtools::install_bitbucket("jvsoest/sparqlr", force = TRUE)
 }
 
 #--------------------------------------------------------------------------------------------------
 # libraries
 suppressMessages(library(sparqlr))
+suppressMessages(library(jsonlite))
 source("varDescription.r")
 #--------------------------------------------------------------------------------------------------
 # arguments
@@ -37,6 +41,4 @@ query <- paste(readLines("query.sparql"), collapse = " ")
 dataSet <- performSparqlQuery.vlp(dataProxyUrl, query, key="VATE", token=proxyToken, verbose=TRUE)
 varDescription <- describeVars(dataSet)
 
-sink(Outputparameterfile)
-varDescription
-sink()
+write(toJSON(varDescription), Outputparameterfile)

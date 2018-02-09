@@ -1,4 +1,14 @@
 args <- commandArgs(trailingOnly = TRUE) # salva gli input della funzione in base a come vengono inserite da riga di comando
+
+installAndLoad <- function(packageName) {
+    if(!(packageName %in% rownames(installed.packages()))) {
+        install.packages(c(packageName), repos = "https://cran.uni-muenster.de/")
+    }
+    library(packageName, character.only = TRUE)
+}
+
+installAndLoad("jsonlite")
+
 #--------------------------------------------------------------------------------------------------
 # libraries
 #--------------------------------------------------------------------------------------------------
@@ -30,8 +40,25 @@ for(siteId in siteIds) {
 }
 
 if(iteration > 1) {
-    fileConn<-file(file.path(outputLocation, "result.txt"))
-    writeLines(c("test"), fileConn)
-    close(fileConn)
+    resultPath <- file.path(outputLocation, "result.txt", fsep="\\")
+    #read JSON files from sites
+    siteOutput <- lapply(siteIds, function(siteId) {
+        filePath <- file.path(siteUpdateFolder, paste0("DistOutput_", siteId, ".txt", sep=""), fsep="\\")
+        singleString <- paste(readLines(filePath), collapse="")
+        objects <- fromJSON(singleString)
+        write(paste0("------------------ Site ", siteId, " ------------------", sep=""), file=resultPath, append=TRUE)
+        write(paste0("patients: ", objects$patients, sep=""), file=resultPath, append=TRUE)
+        write(paste0("rows: ", objects$rows, sep=""), file=resultPath, append=TRUE)
+        write("===== Numeric:", file=resultPath, append=TRUE)
+        write.table(objects$numeric, file=resultPath, append=TRUE)
+        write("===== Categoric:", file=resultPath, append=TRUE)
+        write.table(objects$categories, file=resultPath, append=TRUE, row.names=FALSE)
+        write(paste0("-------------------------------------------------------", sep=""), file=resultPath, append=TRUE)
+        objects
+    })
+
+    #fileConn<-file(file.path(outputLocation, "result.txt"))
+    #writeLines(c("test"), fileConn)
+    #close(fileConn)
 }
     
