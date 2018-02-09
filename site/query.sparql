@@ -16,7 +16,7 @@ WHERE {
   {
     ?patient roo:100018 ?genderRes.
     ?genderRes rdf:type ?genderClass.
-    VALUES (?genderClass ?gender) { (ncit:C16576 "0"^^xsd:int ) (ncit:C20197 "1"^^xsd:int ) } 
+    VALUES (?genderClass ?gender) { (ncit:C16576 "female"^^xsd:string ) (ncit:C20197 "male"^^xsd:string ) } 
   }
   
   {
@@ -32,10 +32,10 @@ WHERE {
     ?clinicalTNMRes rdf:type ncit:C48881.
     ?clinicalTNMRes roo:100244 ?clinicalTRes.
     ?clinicalTRes rdf:type ?clinicalTClass.
-    VALUES (?clinicalTClass ?cT) { (ncit:C48720 "1"^^xsd:int ) (ncit:C48724 "2"^^xsd:int ) (ncit:C48728 "3"^^xsd:int ) (ncit:C48732 "4"^^xsd:int ) }
+    VALUES (?clinicalTClass ?cT) { (ncit:C48720 "1"^^xsd:string ) (ncit:C48724 "2"^^xsd:string ) (ncit:C48728 "3"^^xsd:string ) (ncit:C48732 "4"^^xsd:string ) }
     ?clinicalTNMRes roo:100242 ?clinicalNRes.
     ?clinicalNRes rdf:type ?clinicalNClass.
-    VALUES (?clinicalNClass ?cN) { (ncit:C48705 "0"^^xsd:int ) (ncit:C48706 "1"^^xsd:int ) (ncit:C48786 "2"^^xsd:int ) (ncit:C48714 "3"^^xsd:int ) }
+    VALUES (?clinicalNClass ?cN) { (ncit:C48705 "0"^^xsd:string ) (ncit:C48706 "1"^^xsd:string ) (ncit:C48786 "2"^^xsd:string ) (ncit:C48714 "3"^^xsd:string ) }
   }
   
   {
@@ -46,7 +46,7 @@ WHERE {
     ?survivalMonthsUnit rdf:type uo:UO_0000035.
     ?patient roo:100028 ?vitalStatusRes.
     ?vitalStatusRes rdf:type ?survivalStatus.
-    VALUES (?survivalStatus ?death) { ( ncit:C37987 "0"^^xsd:int ) ( ncit:C28554 "1"^^xsd:int ) }
+    VALUES (?survivalStatus ?death) { ( ncit:C37987 "0"^^xsd:string ) ( ncit:C28554 "1"^^xsd:string ) }
     ?vitalStatusRes roo:100026 ?survivalRes.
   }
 }
