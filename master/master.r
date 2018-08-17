@@ -38,7 +38,7 @@ siteInput = list(query=query)
 siteIds <- unlist(strsplit(siteIds, ","))
 for(siteId in siteIds) {
     fileConn<-file(file.path(outputLocation, paste0("Input_", siteId, ".txt", sep=""), fsep="\\"))
-    writeLines(toJSON(siteInput), fileConn)
+    writeLines(c(toJSON(siteInput), ""), fileConn)
     close(fileConn)
 }
 

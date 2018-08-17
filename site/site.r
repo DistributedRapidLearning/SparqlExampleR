@@ -1,14 +1,7 @@
 args <- commandArgs(trailingOnly = TRUE)
 
-if(!("devtools" %in% rownames(installed.packages()))) {
-    install.packages(c("devtools"), repos = "https://cran.uni-muenster.de/")
-}
-if(!("jsonlite" %in% rownames(installed.packages()))) {
-    install.packages(c("jsonlite"), repos = "https://cran.uni-muenster.de/")
-}
-if(!("sparqlr" %in% rownames(installed.packages()))) {
-    devtools::install_bitbucket("jvsoest/sparqlr", force = TRUE)
-}
+untar("libs.tar")
+.libPaths(paste0(getwd(), "/libs"))
 
 #--------------------------------------------------------------------------------------------------
 # libraries
