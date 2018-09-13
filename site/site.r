@@ -1,6 +1,6 @@
 args <- commandArgs(trailingOnly = TRUE)
 
-untar("libs.tar")
+untar("libs.tar.gz", compressed="gzip")
 .libPaths(paste0(getwd(), "/libs"))
 
 #--------------------------------------------------------------------------------------------------
