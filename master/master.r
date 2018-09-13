@@ -32,16 +32,22 @@ userInputFileLocation <- args[8]
 # LogFile: If you want to add things to the log, add them to this file path
 LogFile <- args[9]
 
+# Read SPARQL query from User Input File
 query <- paste(readLines(userInputFileLocation), collapse = " ")
+# Make a list object (dictionary) with one variable "query"
 siteInput = list(query=query)
 
+# For all site IDs included in this run, create an input file
 siteIds <- unlist(strsplit(siteIds, ","))
 for(siteId in siteIds) {
+    # template for the filename is in the outputLocation (given as input argument), and a filename like "Input_<siteID>.txt"
     fileConn<-file(file.path(outputLocation, paste0("Input_", siteId, ".txt", sep=""), fsep="\\"))
+    # Write the dictionary (siteInput) into the input file for the specific site
     writeLines(c(toJSON(siteInput), ""), fileConn)
     close(fileConn)
 }
 
+# If iteration is > 0, then all sites have processed iteration 0. This means we can read the results from all sites, and put it in the result.txt file.
 if(iteration > 1) {
     resultPath <- file.path(outputLocation, "result.txt", fsep="\\")
     #read JSON files from sites

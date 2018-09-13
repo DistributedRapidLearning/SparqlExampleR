@@ -28,11 +28,14 @@ dataProxyUrl<-args[7]
 proxyToken<-args[8]
 
 #query <- "SELECT * WHERE { ?s ?p ?o. } LIMIT 100"
+# Read the input file the master created, as it holds the SPARQL query
 siteInputParams <- fromJSON(paste(readLines(InputParameterFile), collapse=""))
 query <- siteInputParams$query
 
-
+# Run the SPARQL query on the VLP proxy
 dataSet <- performSparqlQuery.vlp(dataProxyUrl, query, key="VATE", token=proxyToken, verbose=TRUE)
+# Run the statistics on the data.frame
 varDescription <- describeVars(dataSet)
 
+# write the statistics to the output file, this is passed back to the master
 write(toJSON(varDescription), Outputparameterfile)
