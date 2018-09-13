@@ -59,10 +59,19 @@ if(iteration > 1) {
         singleString <- paste(readLines(filePath), collapse="")
         objects <- fromJSON(singleString)
 
+        # create example figure
+        myVector <- rnorm(n=1000, mean=(63+as.numeric(siteId)), sd=10)
+        figureFileName = paste0("hist_", siteId, ".png")
+        dir.create(paste(outputLocation,"/Images",sep=""), showWarnings = FALSE)
+        png(filename = file.path(outputLocation, "Images", figureFileName, fsep="\\"))
+        hist(myVector)
+        dev.off()
+
         # Compile results file
         results <<- addText(results, paste0("patients: ", objects$patients, "\r\nrows: ", objects$rows), title=paste0("Site ", siteId))
         results <<- addTable(results, objects$numeric, caption="Numeric variables")
         results <<- addTable(results, objects$categories, caption="Categorical variables")
+        results <<- addFigure(results, figureFileName, title="My Figure Title", caption="Histogram showing something")
     }
 
     # Write results file
