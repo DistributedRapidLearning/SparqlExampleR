@@ -61,8 +61,8 @@ if(iteration > 1) {
 
         # Compile results file
         results <<- addText(results, paste0("patients: ", objects$patients, "\r\nrows: ", objects$rows), title=paste0("Site ", siteId))
-        results <<- addText(results, objects$numeric, caption="Numeric variables")
-        results <<- addText(results, objects$categories, caption="Categorical variables")
+        results <<- addTable(results, objects$numeric, caption="Numeric variables")
+        results <<- addTable(results, objects$categories, caption="Categorical variables")
     }
 
     # Write results file
