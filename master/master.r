@@ -49,25 +49,23 @@ for(siteId in siteIds) {
 
 # If iteration is > 0, then all sites have processed iteration 0. This means we can read the results from all sites, and put it in the result.txt file.
 if(iteration > 1) {
-    resultPath <- file.path(outputLocation, "result.txt", fsep="\\")
-    #read JSON files from sites
-    siteOutput <- lapply(siteIds, function(siteId) {
+    source("resultsProcessor.r")
+
+    results <<- initResults()
+    
+    for(siteId in siteIds) {
+        # read from site output
         filePath <- file.path(siteUpdateFolder, paste0("DistOutput_", siteId, ".txt", sep=""), fsep="\\")
         singleString <- paste(readLines(filePath), collapse="")
         objects <- fromJSON(singleString)
-        write(paste0("------------------ Site ", siteId, " ------------------", sep=""), file=resultPath, append=TRUE)
-        write(paste0("patients: ", objects$patients, sep=""), file=resultPath, append=TRUE)
-        write(paste0("rows: ", objects$rows, sep=""), file=resultPath, append=TRUE)
-        write("===== Numeric:", file=resultPath, append=TRUE)
-        write.table(objects$numeric, file=resultPath, append=TRUE)
-        write("===== Categoric:", file=resultPath, append=TRUE)
-        write.table(objects$categories, file=resultPath, append=TRUE, row.names=FALSE)
-        write(paste0("-------------------------------------------------------", sep=""), file=resultPath, append=TRUE)
-        objects
-    })
 
-    #fileConn<-file(file.path(outputLocation, "result.txt"))
-    #writeLines(c("test"), fileConn)
-    #close(fileConn)
+        # Compile results file
+        results <<- addText(results, paste0("patients: ", objects$patients, "\r\nrows: ", objects$rows), title=paste0("Site ", siteId))
+        results <<- addText(results, objects$numeric, caption="Numeric variables")
+        results <<- addText(results, objects$categories, caption="Categorical variables")
+    }
+
+    # Write results file
+    writeToFile(results, file.path(outputLocation, "result.txt", fsep="\\"))
 }
     
