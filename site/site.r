@@ -1,8 +1,5 @@
 args <- commandArgs(trailingOnly = TRUE)
 
-untar("libs.tar.gz", compressed="gzip")
-.libPaths(paste0(getwd(), "/libs"))
-
 #--------------------------------------------------------------------------------------------------
 # libraries
 suppressMessages(library(sparqlr))
